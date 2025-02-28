@@ -8,6 +8,7 @@ import Reviews from "../../components/reviews/Reviews";
 
 function Gig() {
   const { id } = useParams();
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
   const { isLoading, error, data } = useQuery({
     queryKey: ["gig"],
@@ -18,6 +19,8 @@ function Gig() {
   });
 
   const userId = data?.userId;
+
+ 
 
   const {
     isLoading: isLoadingUser,
@@ -42,7 +45,7 @@ function Gig() {
         <div className="container">
           <div className="left">
             <span className="breadcrumbs">
-              Freelance flow {">"} Graphics & Design {">"}
+              Freelance flow {">"} Graphics & Design {">"} {currentUser && currentUser._id === userId ? "My Gigs" : "Gigs"}
             </span>
             <h1>{data.title}</h1>
             {isLoadingUser ? (
@@ -132,7 +135,9 @@ function Gig() {
             )}
             <Reviews gigId={id} />
           </div>
-          <div className="right">
+         { currentUser && currentUser._id === userId ?  "" :
+         
+         <div className="right">
             <div className="price">
               <h3>{data.shortTitle}</h3>
               <h2>₹ {data.price}</h2>
@@ -159,7 +164,7 @@ function Gig() {
             <Link to={`/pay/${id}`}>
             <button>Continue</button>
             </Link>
-          </div>
+          </div>}
         </div>
       )}
     </div>
